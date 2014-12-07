@@ -1,0 +1,7 @@
+{
+  "plugins": [
+    "movement",
+    "chat"
+  ],
+  "speed":40
+}
