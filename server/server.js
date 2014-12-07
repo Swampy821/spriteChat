@@ -5,7 +5,6 @@ var base = require('./lib/base.js');
 var stats = {};
 
 io.on('connection', function(socket){
-    console.log('Connection established for id ' + socket.id);
     socket.emit('connected', socket.id);
     stats[socket.id] = {};
     base.process(socket, io, stats);

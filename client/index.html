@@ -9,9 +9,34 @@
         border-radius:10px;
         height: 22px;
     }
+
+    .charSelect {
+        display:block;
+        position:absolute;
+        width:500px;
+        height:500px;
+        background-color:#FFFFFF;
+        z-index:9000;
+    }
+
 </style>
 </head>
 <body>
+
+
+<div class='charSelect'>
+    <select class="selBox">
+        <option value="george">George</option>
+        <option value="pony">Pony</option>
+    </select>
+    <button class='charBtn'>Select This Character</button><Br >
+    <img class="CharImg" src="img/georgeSnap.png">
+</div>
+
+
+
+
+
 
 <div id='talkDiv'>
     <input type='text' id='talk'>

@@ -7,10 +7,11 @@ function P() {
 }
 
 
-P.prototype.send = function(socket, io, location) {
+P.prototype.send = function(socket, io, location, ava) {
   io.emit('movement', {
       id: socket.id,
-      loc:location
+      loc:location,
+      ava: ava
   });
 };
 
@@ -22,17 +23,13 @@ P.prototype.listen = function(socket, io, stats) {
     var location = stats[socket.id].location;
     socket.on('movement', function(response) {
         location = response.loc;
-        self.send(socket, io, location);
+        self.send(socket, io, location, response.ava);
     });
-}
+};
 
 
 var p = new P();
 module.exports.process = function(socket, io, stats) {
-    /* * * * * * * * * *
-     *  DO THINGS HERE *
-     * * * * * * * * * */
-    console.log('Movement Loaded for id ' + socket.id);
     p.listen(socket, io, stats);
 
 };
