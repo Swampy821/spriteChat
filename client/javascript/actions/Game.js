@@ -2,7 +2,8 @@
     function Game() {
         this.config = {
             players:{},
-            sprites:{}
+            sprites:{},
+            nicks: {}
         };
     }
 
@@ -40,12 +41,13 @@
         var self = this;
     };
 
-    Game.prototype.createCharacter = function(id, ava) {
+    Game.prototype.createCharacter = function(id, ava, nick) {
         var char = Crafty.e('2D, DOM, down, Collision');
         char = this.createCharacterWalls(char);
 
         this.config.players[id] = char;
         this.config.sprites[id] = ava;
+        this.config.nicks[id] = nick;
     };
 
     Game.prototype.updateLog = function(name, str) {
@@ -56,6 +58,7 @@
 
     Game.prototype.say = function(id, str) {
         var chr = window.game.config.players[id];
+        var nick = window.game.config.nicks[id];
         var loc = {'y': chr.attr('y'), 'x': chr.attr('x')};
         var s = Crafty.e('2D, DOM, Color, Text')
             .attr({x: loc.x, y: loc.y-40, w: 200, h: 50})
@@ -65,7 +68,7 @@
                 size:'18px',
                 weight:'bold'
             });
-        this.updateLog(id, str);
+        this.updateLog(nick, str);
 
         setTimeout(function() {
             s.destroy();
@@ -95,7 +98,7 @@
 
 
 
-    Game.prototype.setupBoard = function(ava) {
+    Game.prototype.setupBoard = function(ava, nick) {
         var self = this;
 
         window.socket = io(window.location.hostname +':' +  3000);
@@ -104,6 +107,7 @@
             self.config.myId = res;
             self.createCharacter(self.config.myId, ava);
             self.config.sprites[self.config.myId] = ava;
+            self.config.nicks[self.config.myId] = nick;
         });
 
         var m = new M();

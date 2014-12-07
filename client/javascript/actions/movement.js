@@ -21,7 +21,8 @@
         socket.emit('movement', {
             id:window.game.config.myId,
             loc: pos,
-            ava:window.game.config.sprites[window.game.config.myId]
+            ava:window.game.config.sprites[window.game.config.myId],
+            nick: window.game.config.nicks[window.game.config.myId]
         });
     };
 
@@ -87,7 +88,7 @@
             /* UPDATE THINGS */
 
                 if(window.game.config.players[response.id] === undefined) {
-                    window.game.createCharacter(response.id, response.ava);
+                    window.game.createCharacter(response.id, response.ava, response.nick);
                 }
             if(response.id !== window.game.config.myId) {
                 self.figureOutMovement(response.id, response.loc);

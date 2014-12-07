@@ -10,7 +10,6 @@ io.on('connection', function(socket){
     base.process(socket, io, stats);
     io.emit('newChar', socket.id);
     socket.on('disconnect', function() {
-        console.log('disconnected ' + socket.id);
         io.emit('disconnect', socket.id);
     })
 });

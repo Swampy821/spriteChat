@@ -8,5 +8,6 @@ $('.charSelect').on('change', function() {
 $('.charBtn').on('click', function() {
     $('.charSelect').hide();
     var ava = $('.charSelect option:selected').val();
-    game.setupBoard(ava);
+    var nick = $('#username').val();
+    game.setupBoard(ava, nick);
 });

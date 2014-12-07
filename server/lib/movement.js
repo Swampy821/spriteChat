@@ -7,11 +7,12 @@ function P() {
 }
 
 
-P.prototype.send = function(socket, io, location, ava) {
+P.prototype.send = function(socket, io, location, ava, nick) {
   io.emit('movement', {
       id: socket.id,
       loc:location,
-      ava: ava
+      ava: ava,
+      nick: nick
   });
 };
 
@@ -23,7 +24,7 @@ P.prototype.listen = function(socket, io, stats) {
     var location = stats[socket.id].location;
     socket.on('movement', function(response) {
         location = response.loc;
-        self.send(socket, io, location, response.ava);
+        self.send(socket, io, location, response.ava, response.nick);
     });
 };
 
