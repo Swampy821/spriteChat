@@ -48,7 +48,11 @@
         this.config.sprites[id] = ava;
     };
 
-
+    Game.prototype.updateLog = function(name, str) {
+        var log = $('#log').val();
+        log = name + ': ' + str + '\n' + log;
+        $('#log').val(log);
+    };
 
     Game.prototype.say = function(id, str) {
         var chr = window.game.config.players[id];
@@ -61,13 +65,19 @@
                 size:'18px',
                 weight:'bold'
             });
-
+        this.updateLog(id, str);
 
         setTimeout(function() {
             s.destroy();
         }, window.gameConfig.textDelay);
     };
 
+    Game.prototype.listenForDisconnect = function() {
+        var self = this;
+        socket.on('disconnect', function(id) {
+            self.config.players[id].destroy();
+        });
+    };
 
     Game.prototype.listenForSay = function() {
         var self = this;
@@ -115,6 +125,7 @@
                     $(this).val('');
                 }
             });
+        $('#log').css('width',gameConfig.width + 'px');
 
 
         //Create Character
@@ -125,7 +136,7 @@
         self.createWalls();
 
         self.listenForSay();
-
+        self.listenForDisconnect();
     };
 
 

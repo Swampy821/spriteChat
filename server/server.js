@@ -9,7 +9,13 @@ io.on('connection', function(socket){
     stats[socket.id] = {};
     base.process(socket, io, stats);
     io.emit('newChar', socket.id);
+    socket.on('disconnect', function() {
+        console.log('disconnected ' + socket.id);
+        io.emit('disconnect', socket.id);
+    })
 });
+
+
 http.listen(3000, function(){
     console.log('listening on *:3000');
 });
