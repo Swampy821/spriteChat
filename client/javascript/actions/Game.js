@@ -77,6 +77,7 @@
     Game.prototype.say = function(id, str) {
         var chr = window.game.config.players[id];
         var nick = window.game.config.nicks[id];
+        if(chr===undefined) { return; }
         var loc = {'y': chr.attr('y'), 'x': chr.attr('x')};
         var s = Crafty.e('2D, DOM, Color, Text')
             .attr({x: loc.x, y: loc.y-40, w: 200, h: 50})
@@ -133,7 +134,6 @@
             self.createCharacter(self.config.myId, ava);
             self.config.sprites[self.config.myId] = ava;
             self.config.nicks[self.config.myId] = nick;
-            console.log('adding');
         });
 
         var m = new M();
