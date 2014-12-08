@@ -15,6 +15,7 @@
     M.prototype.move = function(char, dir) {
         this.clearComponents(char);
         char.addComponent(dir);
+        game.renderUserList();
     };
     M.prototype.update = function(chr) {
         var pos = {'y': chr.attr('y'), 'x': chr.attr('x')};
@@ -24,6 +25,7 @@
             ava:window.game.config.sprites[window.game.config.myId],
             nick: window.game.config.nicks[window.game.config.myId]
         });
+
     };
 
     M.prototype.figureOutMovement = function(id, newLoc) {

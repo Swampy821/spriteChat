@@ -41,6 +41,22 @@
         var self = this;
     };
 
+    Game.prototype.renderUserList = function() {
+      var userList = $('.user-list');
+        var nickList = this.config.nicks;
+        var nickArray = [];
+        for(keys in nickList) {
+            nickArray.push('<img src="img/' + this.config.sprites[keys] + 'Snap.png"> ' + nickList[keys]);
+        }
+        if(nickArray.length>0) {
+
+            userList.html(nickArray.join('<br>'));
+        }else{
+            userList.html('');
+        }
+    };
+
+
     Game.prototype.createCharacter = function(id, ava, nick) {
         var char = Crafty.e('2D, DOM, down, Collision');
         char = this.createCharacterWalls(char);
@@ -48,6 +64,8 @@
         this.config.players[id] = char;
         this.config.sprites[id] = ava;
         this.config.nicks[id] = nick;
+
+        this.renderUserList();
     };
 
     Game.prototype.updateLog = function(name, str) {
@@ -75,10 +93,17 @@
         }, window.gameConfig.textDelay);
     };
 
+
     Game.prototype.listenForDisconnect = function() {
         var self = this;
         socket.on('disconnect', function(id) {
-            self.config.players[id].destroy();
+            if(self.config.players[id] !== undefined) {
+                self.config.players[id].destroy();
+            }
+            delete self.config.players[id];
+            delete self.config.nicks[id];
+            delete self.config.sprites[id];
+            self.renderUserList();
         });
     };
 
@@ -108,29 +133,29 @@
             self.createCharacter(self.config.myId, ava);
             self.config.sprites[self.config.myId] = ava;
             self.config.nicks[self.config.myId] = nick;
+            console.log('adding');
         });
 
         var m = new M();
         m.init();
 
-        Crafty.init(gameConfig.width, gameConfig.height);
+        Crafty.init(gameConfig.width, gameConfig.height, $('.room')[0]);
         Crafty.background(gameConfig.background);
+
+        $('.room').parent().css('width',gameConfig.width + 2);
 
         self.loadCharacters();
 
-        $('#talkDiv').css('top',gameConfig.height + 11);
-        $('#talkDiv > #talk')
-            .css('width', gameConfig.width + 'px')
+        $('#talk')
             .keydown(function(e) {
                 if(e.keyCode === 13) {
+                    e.preventDefault();
                     var str = $(this).val();
                     self.say(self.config.myId, str);
                     self.emitSay(self.config.myId, str);
                     $(this).val('');
                 }
             });
-        $('#log').css('width',gameConfig.width + 'px');
-
 
         //Create Character
 
