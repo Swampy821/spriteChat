@@ -127,17 +127,21 @@
     Game.prototype.setupBoard = function(ava, nick) {
         var self = this;
 
-        window.socket = io(window.location.hostname +':' +  3000);
-
-        socket.on('connected', function (res) {
-            self.config.myId = res;
-            self.createCharacter(self.config.myId, ava);
-            self.config.sprites[self.config.myId] = ava;
-            self.config.nicks[self.config.myId] = nick;
+        window.socket = io(window.location.hostname +':' +  3000, {
+            query:'ava=' + ava + '&nick=' + nick,
+            'connect timeout':1000,
+            'autoReconnect':false
         });
 
-        var m = new M();
-        m.init();
+        socket.on('connected', function (res) {
+            self.config.myId = res.id;
+            self.config.sprites[self.config.myId] = ava;
+            self.config.nicks[self.config.myId] = nick;
+            self.processCurrentCharacters(res.stat);
+        });
+
+        self.m = new M();
+        self.m.init();
 
         Crafty.init(gameConfig.width, gameConfig.height, $('.room')[0]);
         Crafty.background(gameConfig.background);
@@ -166,9 +170,15 @@
 
         self.listenForSay();
         self.listenForDisconnect();
+        self.listenForNewChar();
+        self.listenForErrors();
     };
 
-
+    Game.prototype.listenForErrors = function() {
+        window.socket.on('error', function(res) {
+            console.log(res | 'Error');
+        });
+    };
 
 
     Game.prototype.loadCharacters = function() {
@@ -187,8 +197,31 @@
     };
 
 
+    Game.prototype.listenForNewChar = function() {
+        var self = this;
+        window.socket.on('newChar', function(res) {
+            self.createCharacter(res.id, res.ava, res.nick);
+            self.m.figureOutMovement(res.id, {x:1, y:1}); //Force sprite to show up.
+        });
+    };
 
 
+    Game.prototype.processCurrentCharacters = function(statsObj) {
+        var con = this.config,
+            nicks = con.nicks,
+            sprites = con.sprites,
+            players = con.players,
+            statKeys = Object.keys(statsObj),
+            self = this;
+
+        for(var i=0; i< statKeys.length; i++) {
+                var p = statsObj[statKeys[i]];
+                if(players[statKeys[i]] === undefined) {
+                    self.createCharacter(p.id, p.ava, p.nick);
+                    self.m.figureOutMovement(p.id, p.location);
+                }
+            }
+    };
 
 
     window.Game = Game;

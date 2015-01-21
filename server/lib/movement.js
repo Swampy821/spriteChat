@@ -25,6 +25,7 @@ P.prototype.listen = function(socket, io, stats) {
     socket.on('movement', function(response) {
         location = response.loc;
         self.send(socket, io, location, response.ava, response.nick);
+        stats[socket.id].location = location;
     });
 };
 
