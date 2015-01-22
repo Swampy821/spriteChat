@@ -1,8 +1,10 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var base = require('./lib/base.js');
-var stats = {};
+var app = require('express')(),
+    http = require('http').Server(app),
+    io = require('socket.io')(http),
+    base = require('./lib/base.js'),
+    cp = require('child_process'),
+    port = 3000,
+    stats = {};
 
 io.on('connection', function(socket){
     console.log(stats);
@@ -21,11 +23,11 @@ io.on('connection', function(socket){
     io.emit('newChar', charObj);
     socket.on('disconnect', function() {
         delete stats[socket.id];
-        console.log('deleted ' + socket.id);
         io.emit('disconnect', socket.id);
     })
 });
 
-http.listen(3000, function(){
-    console.log('listening on *:3000');
+http.listen(port, function(){
+    console.log('Socket server started on port ' + port + '.');
+    cp.fork(__dirname + '/hapiServer.js');
 });
