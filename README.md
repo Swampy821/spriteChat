@@ -4,31 +4,17 @@
 
 ```
     sudo npm install -g gulp
-    sudo npm install -g http-server
-    npm install
+    sudo npm install
     gulp
 ```
 
-###Navigate to teh server folder and run the following commands
-```
-    npm install
-```
-
-
-
 ##Starting the server
-To start the backend server navigate to the server folder and run
+To start the servers navigate to the server folder and run
 ```
     node server.js
 ```
 
 
-##Starting the client
-To start the client navigate to teh build/client folder and run
-```
-    http-server -p 9000
-```
-
-View your server at http://localhost:9000
+View your server at http://localhost:3002
 
 
