@@ -127,7 +127,7 @@
     Game.prototype.setupBoard = function(ava, nick) {
         var self = this;
 
-        window.socket = io(window.location.hostname +':' +  3000 + "/ws", {
+        window.socket = io(window.location.hostname +':' +  3000, {
             query:'ava=' + ava + '&nick=' + nick,
             'connect timeout':1000,
             'autoReconnect':false
