@@ -8,7 +8,7 @@
     "gulp": "^3.8.10",
     "gulp-concat": "^2.4.3",
     "gulp-copy": "^0.0.2",
-    "gulp-less": "^2.0.1",
+    "gulp-less": "^x.x.x",
     "gulp-watch": "^3.0.0",
     "hapi": "^8.1.0",
     "socket.io": "^1.3.2"
