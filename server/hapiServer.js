@@ -8,7 +8,7 @@ server.route({
     method:'GET',
     path:'/',
     handler: function(request, reply) {
-       reply.file('../build/client/index.html');
+       reply.file( __dirname + '/../build/client/index.html');
     }
 });
 
@@ -16,7 +16,7 @@ server.route({
     method:'GET',
     path:'/{fold}/{name}',
     handler: function(request, reply) {
-        reply.file('../build/client/' + request.params.fold + '/' + request.params.name);
+        reply.file( __dirname  + '/../build/client/' + request.params.fold + '/' + request.params.name);
     }
 });
 
